@@ -5,6 +5,7 @@ import Shelters from './Pages/Shelters.jsx';
 import FireStations from './Pages/FireStations.jsx';
 import Hospitals from './Pages/Hospitals.jsx'; 
 import AwarenessPage from './Pages/AwarenessPage.jsx';
+import DashBoard from './Pages/DashBoard.jsx';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route path="/fire-stations" element={<FireStations />} />
       <Route path="/hospitals" element={<Hospitals />} />
       <Route path="/Awareness-Page" element={<AwarenessPage />} />
+      <Route path="/DashBoard" element={<DashBoard />} />
     </Routes>
   );
 }
