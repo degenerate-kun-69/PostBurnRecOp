@@ -9,6 +9,15 @@ const DashBoard = () => {
     <div><Navbar/></div>
      <Map />
      <ChatBot />
+
+
+
+<div>
+
+</div>
+
+
+    
     </>
    
   )

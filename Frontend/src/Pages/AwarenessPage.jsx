@@ -6,6 +6,7 @@ import {
   Snowflake, CloudLightning, CloudFog, Skull,
   Droplets, HeartPulse, Tent, Sandwich
 } from 'lucide-react';
+import Navbar from '../Components/NavBar';
 
 const DisasterGuide = ({ 
   icon: Icon, 
@@ -443,6 +444,7 @@ const AwarenessPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
+     
       {/* Header */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">Natural Disaster Awareness & Prevention</h1>
