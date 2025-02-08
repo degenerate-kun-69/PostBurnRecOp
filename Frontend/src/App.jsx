@@ -6,6 +6,7 @@ import FireStations from './Pages/FireStations.jsx';
 import Hospitals from './Pages/Hospitals.jsx'; 
 import AwarenessPage from './Pages/AwarenessPage.jsx';
 import DashBoard from './Pages/DashBoard.jsx';
+import MapViews from './Pages/MapViews.jsx';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="/hospitals" element={<Hospitals />} />
       <Route path="/Awareness-Page" element={<AwarenessPage />} />
       <Route path="/DashBoard" element={<DashBoard />} />
+      <Route path="/map-views" element={<MapViews />} />
     </Routes>
   );
 }
