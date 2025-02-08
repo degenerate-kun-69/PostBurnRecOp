@@ -48,6 +48,17 @@ const Shelters = () => {
                     Google Maps API integration coming soon
                   </p>
                 </div>
+                <LoadScript
+                  googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+                  libraries={["places"]}
+                  onLoad={() => setMapLoaded(true)}
+                >
+                  <GoogleMap mapContainerStyle={containerStyle} center={defaultCenter} zoom={12}>
+                    {hospitalData.map((hospital) => (
+                      <Marker key={hospital.id} position={hospital.position} label={hospital.name} />
+                    ))}
+                  </GoogleMap>
+                </LoadScript>
               </div>
             </div>
           </div>
