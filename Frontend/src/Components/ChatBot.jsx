@@ -17,8 +17,8 @@ const ChatBot = () => {
 
   const getBotResponse = (message) => {
     const lowerMessage = message.toLowerCase();
-  
-    if (lowerMessage.includes('emergency')) {
+    const emergencyKeywords = ['emergency', 'help', 'panic', 'accident'];
+    if (emergencyKeywords.some(keyword => input.toLowerCase().includes(keyword))) {
       return {
         text: 'If this is an emergency, please call 911 immediately. Would you like me to connect you with emergency services?',
         action: 'emergency',
@@ -138,88 +138,88 @@ const ChatBot = () => {
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg transition-transform transform hover:scale-110"
+    <button 
+      onClick={() => setIsOpen(!isOpen)}
+      className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg transition-transform transform hover:scale-110"
+    >
+      <svg 
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-          />
-        </svg>
-      </button>
-
-      {isOpen && (
-        <div className="w-96 bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
-          <div className="bg-blue-600 text-white p-4 flex justify-between items-center">
-            <h2 className="text-lg font-semibold">Emergency Chatbot</h2>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-white hover:text-gray-200"
+        <path 
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+        />
+      </svg>
+    </button>
+    
+    {isOpen && (
+      <div className="w-96 bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
+        <div className="bg-blue-600 text-white p-4 flex justify-between items-center">
+          <h2 className="text-lg font-semibold">Emergency Chatbot</h2>
+          <button 
+            onClick={() => setIsOpen(false)}
+            className="text-white hover:text-gray-200"
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+              <path 
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+        
+        <div className="flex-1 p-4 bg-gray-50 overflow-y-auto">
+          {messages.map(message => (
+            <div 
+              key={message.id}
+              className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'} mb-4`}
+            >
+              <div
+                className={`max-w-[75%] rounded-lg px-4 py-2 ${message.sender === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+                {message.text}
+              </div>
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+        
+        <div className="p-4 bg-white border-t border-gray-200">
+          <div className="flex gap-2">
+            <input 
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+              placeholder="Type your emergency..."
+              className="flex-1 bg-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button 
+              onClick={handleSend}
+              className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg p-2"
+            >
+              <Send size={20} />
             </button>
           </div>
-
-          <div className="flex-1 p-4 bg-gray-50 overflow-y-auto">
-            {messages.map(message => (
-              <div
-                key={message.id}
-                className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'} mb-4`}
-              >
-                <div
-                  className={`max-w-[75%] rounded-lg px-4 py-2 ${message.sender === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
-                >
-                  {message.text}
-                </div>
-              </div>
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
-
-          <div className="p-4 bg-white border-t border-gray-200">
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="Type your emergency..."
-                className="flex-1 bg-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                onClick={handleSend}
-                className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg p-2"
-              >
-                <Send size={20} />
-              </button>
-            </div>
-          </div>
         </div>
-      )}
-    </div>
+      </div>
+    )}
+  </div>
   );
 };
 
