@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Send } from 'lucide-react';
 
+import EmergencyCallButton from './EmergencyCallButton';
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const messagesEndRef = useRef(null);
+
+
+
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -17,14 +21,21 @@ const ChatBot = () => {
 
   const getBotResponse = (message) => {
     const lowerMessage = message.toLowerCase();
-    const emergencyKeywords = ['emergency', 'help', 'panic', 'accident'];
+   /* const emergencyKeywords = ['emergency', 'help', 'panic', 'accident'];
     if (emergencyKeywords.some(keyword => input.toLowerCase().includes(keyword))) {
       return {
         text: 'If this is an emergency, please call 911 immediately. Would you like me to connect you with emergency services?',
         action: 'emergency',
       };
-    }
-  
+    }*/
+      if (lowerMessage.includes('help') || lowerMessage.includes('call')) {
+        return {
+          text: 'I can help you with emergency services. Would you like to learn about emergency services or make an emergency call?',
+          action: 'help',
+          showCallButton: true  // Add flag to show call button
+        };
+      }
+    
     if (lowerMessage.includes('flood')) {
       return {
         text: 'For flood-related emergencies: 1. Move to higher ground immediately 2. Avoid walking through flowing water 3. Stay tuned to local news. Do you need specific evacuation routes?',
@@ -138,6 +149,10 @@ const ChatBot = () => {
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
+
+
+
+      
     <button 
       onClick={() => setIsOpen(!isOpen)}
       className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg transition-transform transform hover:scale-110"
@@ -214,7 +229,9 @@ const ChatBot = () => {
               className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg p-2"
             >
               <Send size={20} />
+            
             </button>
+           
           </div>
         </div>
       </div>

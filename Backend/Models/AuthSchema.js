@@ -3,7 +3,7 @@ const AuthSchema = {
     userId: {
       type: ObjectId,
       required: true,
-      refPath: 'userType'  // Dynamic reference to Admin/Volunteer
+      refPath: 'userType'  
     },
     userType: {
       type: String,
