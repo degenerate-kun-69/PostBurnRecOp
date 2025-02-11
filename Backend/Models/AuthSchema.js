@@ -10,11 +10,7 @@ const AuthSchema = {
       required: true,
       enum: ['Admin', 'Volunteer']
     },
-    email: {
-      type: String,
-      required: true,
-      unique: true
-    },
+   
     password: {
       type: String,
       required: true
