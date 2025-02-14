@@ -27,7 +27,12 @@ const ChatBot = () => {
         text: 'If this is an emergency, please call 911 immediately. Would you like me to connect you with emergency services?',
         action: 'emergency',
       };
-    }*/
+    }*/   
+
+
+   /*   ! for typing or showing all  the words in the chatbot 
+     */
+    
       if (lowerMessage.includes('help') || lowerMessage.includes('call')) {
         return {
           text: 'I can help you with emergency services. Would you like to learn about emergency services or make an emergency call?',
@@ -198,7 +203,7 @@ const ChatBot = () => {
           </button>
         </div>
         
-        <div className="flex-1 p-4 bg-gray-50 overflow-y-auto">
+        <div className="flex-1 p-4 bg-gray-700 overflow-y-auto">
           {messages.map(message => (
             <div 
               key={message.id}
@@ -214,7 +219,7 @@ const ChatBot = () => {
           <div ref={messagesEndRef} />
         </div>
         
-        <div className="p-4 bg-white border-t border-gray-200">
+        <div className="p-4 bg-gray-700 border-t border-gray-700">
           <div className="flex gap-2">
             <input 
               type="text"
@@ -222,7 +227,7 @@ const ChatBot = () => {
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSend()}
               placeholder="Type your emergency..."
-              className="flex-1 bg-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex-1 bg-gray-800 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button 
               onClick={handleSend}

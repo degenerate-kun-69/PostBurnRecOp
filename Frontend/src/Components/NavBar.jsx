@@ -19,7 +19,7 @@ const Navbar = () => {
             <span className="text-xl font-bold">Disaster Management</span>
           </Link>
           
-          <form onSubmit={handleSearch} className="flex-1 max-w-xl mx-8">
+          <form onSubmit={handleSearch} className="flex-1 max-w-xl mx-4">
             <div className="relative">
               <input
                 type="text"
@@ -28,11 +28,11 @@ const Navbar = () => {
                 placeholder="Search for locations, services..."
                 className="w-80 px-3 py-2 pl-10 pr-15 rounded-lg bg-blue-500 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:bg-blue-400 transition-all duration-100"
               />
-              <Search className="absolute left-3 top-2.5 h-5 w-5 text-blue-200" />
+              <Search className="absolute left-2 top-2.5 h-5 w-5 text-blue-200" />
               {searchQuery && (
                 <button
                   type="submit"
-                  className="absolute right-5 top-2 px-2 py-1 text-sm bg-blue-700 rounded hover:bg-blue-800 transition-colors duration-200"
+                  className="absolute right-3 top-2 px-2 py-1 text-sm bg-blue-700 rounded hover:bg-blue-800 transition-colors duration-200"
                 >
                   Search
                 </button>
@@ -64,6 +64,10 @@ const Navbar = () => {
             <Link to="/DashBoard" className="flex items-center space-x-2 hover:text-blue-200 transition-colors">
               <LayoutDashboard className="h-5 w-5" />
               <span>DashBoard</span>
+            </Link>
+            <Link to="/disaster-alerts" className="flex items-center space-x-2 hover:text-blue-200 transition-colors">
+              <LayoutDashboard className="h-5 w-5" />
+              <span>Disaster Alerts</span>
             </Link>
           </div>
         </div>
