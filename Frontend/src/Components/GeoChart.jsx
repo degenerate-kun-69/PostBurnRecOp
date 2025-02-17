@@ -1,87 +1,80 @@
-import React, { useState } from 'react';
+import React from "react";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title
+} from 'chart.js';
+import { Pie } from "react-chartjs-2";
+
+// Register Chart.js components
+ChartJS.register(ArcElement, Tooltip, Legend, Title);
+
+const disasterData = {
+  labels: ["Floods", "Cyclones", "Landslides", "Earthquakes", "Other"],
+  datasets: [
+    {
+      data: [40, 25, 15, 10, 10],
+      backgroundColor: [
+        "#8884d8",
+        "#82ca9d", 
+        "#ffc658",
+        "#ff6666",
+        "#66b3ff"
+      ],
+      borderColor: [
+        "#7771c4",
+        "#6fb589",
+        "#e6b24f",
+        "#e65c5c",
+        "#5c9ee6"
+      ],
+      borderWidth: 1,
+    },
+  ],
+};
+
+const options = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: "top",
+      labels: {
+        padding: 20,
+        font: {
+          size: 12
+        }
+      }
+    },
+    tooltip: {
+      enabled: true,
+      callbacks: {
+        label: (context) => {
+          const value = context.raw;
+          return `${context.label}: ${value}%`;
+        }
+      }
+    },
+    title: {
+      display: true,
+      text: 'Distribution of Natural Disasters',
+      font: {
+        size: 16
+      },
+      padding: {
+        top: 10,
+        bottom: 20
+      }
+    }
+  }
+};
 
 const GeoChart = () => {
-  const [selectedRegion, setSelectedRegion] = useState(null);
-  
-  const data = [
-    { country: "Germany", value: 200 },
-    { country: "United States", value: 300 },
-    { country: "Brazil", value: 400 },
-    { country: "Canada", value: 500 },
-    { country: "France", value: 600 },
-    { country: "Russia", value: 700 }
-  ];
-
-  const maxValue = Math.max(...data.map(item => item.value));
-
-  const handleClick = (country) => {
-    setSelectedRegion(country);
-  };
-
   return (
-    <div style={{ 
-      maxWidth: '800px', 
-      margin: '20px auto',
-      padding: '20px',
-      border: '1px solid #ddd',
-      borderRadius: '8px',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-    }}>
-      <div style={{ marginBottom: '20px' }}>
-        <h2 style={{ margin: '0 0 10px 0' }}>Geographic Data Distribution</h2>
-      </div>
-      <div>
-        {data.map((item) => (
-          <div
-            key={item.country}
-            onClick={() => handleClick(item)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: '10px',
-              marginBottom: '8px',
-              cursor: 'pointer',
-              backgroundColor: selectedRegion?.country === item.country ? '#f0f0f0' : 'transparent',
-              borderRadius: '4px',
-              transition: 'background-color 0.2s'
-            }}
-          >
-            <div style={{ width: '120px' }}>{item.country}</div>
-            <div style={{ flex: 1, marginRight: '20px' }}>
-              <div style={{ 
-                position: 'relative',
-                height: '24px',
-                backgroundColor: '#eee',
-                borderRadius: '4px',
-                overflow: 'hidden'
-              }}>
-                <div
-                  style={{
-                    position: 'absolute',
-                    height: '100%',
-                    backgroundColor: '#2196f3',
-                    width: `${(item.value / maxValue) * 100}%`,
-                    transition: 'width 0.3s ease'
-                  }}
-                />
-              </div>
-            </div>
-            <div style={{ width: '60px', textAlign: 'right' }}>{item.value}</div>
-          </div>
-        ))}
-      </div>
-      
-      {selectedRegion && (
-        <div style={{
-          marginTop: '20px',
-          padding: '15px',
-          backgroundColor: '#f5f5f5',
-          borderRadius: '4px'
-        }}>
-          <p style={{ margin: '0 0 5px 0' }}>Selected Region: {selectedRegion.country}</p>
-          <p style={{ margin: '0' }}>Value: {selectedRegion.value}</p>
-        </div>
-      )}
+    <div className="h-64">
+      <Pie data={disasterData} options={options} />
     </div>
   );
 };

@@ -43,7 +43,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-6">
             <Link to="/map-views" className="flex items-center space-x-2 hover:text-blue-200 transition-colors">
               <Map className="h-5 w-5" />
-              <span>Map Views</span>
+              <span>Live Map</span>
             </Link>
             <Link to="/shelters" className="flex items-center space-x-2 hover:text-blue-200 transition-colors">
               <MapPin className="h-5 w-5" />
@@ -65,10 +65,7 @@ const Navbar = () => {
               <LayoutDashboard className="h-5 w-5" />
               <span>DashBoard</span>
             </Link>
-            <Link to="/disaster-alerts" className="flex items-center space-x-2 hover:text-blue-200 transition-colors">
-              <LayoutDashboard className="h-5 w-5" />
-              <span>Disaster Alerts</span>
-            </Link>
+            
           </div>
         </div>
       </div>

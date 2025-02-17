@@ -121,7 +121,10 @@ const EmergencyContacts = () => (
 
 const AwarenessPage = () => {
   const disasterGuides = [
+    
     {
+    
+
       icon: Mountain,
       title: "Volcanoes",
       description: "Volcanic eruptions can release lava, gases, rocks, and ash into the surrounding area, causing widespread destruction.",
@@ -130,7 +133,8 @@ const AwarenessPage = () => {
         "Prepare an emergency evacuation plan",
         "Keep goggles and masks ready for ash",
         "Monitor volcanic activity alerts"
-      ],
+      ]
+      ,
       beforeDisaster: [
         "Develop an evacuation plan and practice it",
         "Prepare emergency supplies including masks",
