@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from "react";
 import Navbar from "../Components/NavBar.jsx";
 import ChatBot from "../Components/ChatBot.jsx";
 import DisasterAlert from "../Components/DisasterAlert.jsx";
+//import CompactEarthquakeChart from "../Components/BarGraph.jsx";
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
@@ -43,13 +44,15 @@ const GeoChart = lazy(() => import("../Components/GeoChart.jsx"));
 
 const DashBoard = () => {
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen bg-gray-100 ">
     
 
       <Navbar />
+      <DisasterAlert/>
      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Map Section */}
+        
         <ErrorBoundary>
           <div className="bg-white p-4 shadow-md rounded-lg">
             <h2 className="text-xl font-semibold mb-4">Geographic Map</h2>
@@ -68,8 +71,9 @@ const DashBoard = () => {
             </Suspense>
           </div>
         </ErrorBoundary>
-        <DisasterAlert/>
+      
       </div>
+    
 
       <ChatBot/>
           </div>

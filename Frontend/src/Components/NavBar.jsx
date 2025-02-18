@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Home, MapPin, Flame, Search, Map, Hospital, LayoutDashboard } from 'lucide-react';
+import { Home, MapPin, Flame, Search, Map, Hospital, LayoutDashboard, AlertCircle, AlertOctagon } from 'lucide-react';
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -65,7 +65,10 @@ const Navbar = () => {
               <LayoutDashboard className="h-5 w-5" />
               <span>DashBoard</span>
             </Link>
-            
+            <Link to="/DisasterAlert" className="flex items-center space-x-2 hover:text-blue-200 transition-colors">
+              <AlertOctagon className="h-5 w-5" />
+              <span>DisasterAlert</span>
+            </Link>
           </div>
         </div>
       </div>
