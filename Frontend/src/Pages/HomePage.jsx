@@ -3,6 +3,7 @@ import Navbar from '../Components/NavBar.jsx';
 import Content from '../Components/Content.jsx';
 import { MapPin, Flame,Hospital,Map } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import ChatBot from "../Components/ChatBot.jsx";
 
 
 const HomePage = () => {
@@ -36,7 +37,7 @@ const HomePage = () => {
     </div>
     <p className="text-gray-600">Locate the nearest Hospitals.</p>
   </Link>
-  <Link to="/Map Views" className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow flex-1 max-w-[22%]">
+  <Link to="/map-views" className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow flex-1 max-w-[22%]">
     <div className="flex items-center mb-4">
       <Map className="h-8 w-8 text-red-600" />
       <h2 className="text-2xl font-semibold ml-3">Map Views</h2>
@@ -47,7 +48,7 @@ const HomePage = () => {
 
  {/* Prevention Guides and Plans */}
 
-
+<ChatBot/>
 
  <Content/>
 

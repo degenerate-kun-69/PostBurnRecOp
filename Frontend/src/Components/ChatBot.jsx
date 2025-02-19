@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Send } from 'lucide-react';
 
-import EmergencyCallButton from './EmergencyCallButton';
+
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -33,9 +33,9 @@ const ChatBot = () => {
    /*   ! for typing or showing all  the words in the chatbot 
      */
     
-      if (lowerMessage.includes('help') || lowerMessage.includes('call')) {
+      if (lowerMessage.includes('help') ) {
         return {
-          text: 'I can help you with emergency services. Would you like to learn about emergency services or make an emergency call?',
+          text : 'I can help you with emergency services. Would you like to learn about emergency services or make an emergency call?  ',
           action: 'help',
           showCallButton: true  // Add flag to show call button
         };
@@ -203,7 +203,7 @@ const ChatBot = () => {
           </button>
         </div>
         
-        <div className="flex-1 p-4 bg-gray-700 overflow-y-auto">
+        <div className="flex-1 p-4 bg-gray-800 overflow-y-auto">
           {messages.map(message => (
             <div 
               key={message.id}
@@ -219,7 +219,7 @@ const ChatBot = () => {
           <div ref={messagesEndRef} />
         </div>
         
-        <div className="p-4 bg-gray-700 border-t border-gray-700">
+        <div className="p-4 bg-gray-400 border-t border-gray-400">
           <div className="flex gap-2">
             <input 
               type="text"
@@ -227,7 +227,7 @@ const ChatBot = () => {
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSend()}
               placeholder="Type your emergency..."
-              className="flex-1 bg-gray-800 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex-1 bg-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button 
               onClick={handleSend}

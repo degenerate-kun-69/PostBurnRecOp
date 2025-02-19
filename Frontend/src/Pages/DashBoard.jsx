@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import Navbar from "../Components/NavBar.jsx";
-import ChatBot from "../Components/ChatBot.jsx";
+
 import DisasterAlert from "../Components/DisasterAlert.jsx";
 //import CompactEarthquakeChart from "../Components/BarGraph.jsx";
 
@@ -75,7 +75,7 @@ const DashBoard = () => {
       </div>
     
 
-      <ChatBot/>
+
           </div>
   );
 };
