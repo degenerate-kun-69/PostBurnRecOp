@@ -6,9 +6,8 @@ import cookieParser from "cookie-parser";
 import connectDB from "./db/connectDB.js";
 import router from "./routes/Auth.Routes.js";
 import UserRouter from "./routes/UserRoutes.js";
-import Alertsrouter from "./routes/DisasterAlertsandNotifications.js";
+
 import errormiddleware from "./Middlewares/ErrorMiddleWare.js";
-import { User } from "./Models/userSchema.js";
 
 dotenv.config();
 connectDB();
@@ -24,14 +23,12 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 app.use("/api/v1/auth", router);
 app.use("/api/v1/users", UserRouter);
-app.use("/api/v1/alerts", Alertsrouter);
 
 app.use(errormiddleware);
 
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
-
 
 app.use((err, req, res, next) => {
   res.status(err.statusCode || 500).json({
