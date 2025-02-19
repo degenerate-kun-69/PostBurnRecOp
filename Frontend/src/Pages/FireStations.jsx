@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../Components/NavBar.jsx";
-import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
+//import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import {  Phone, MapPin, ShieldCheck, Navigation, Flame } from "lucide-react";
 
 const containerStyle = {

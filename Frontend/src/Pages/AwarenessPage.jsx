@@ -6,7 +6,7 @@ import {
   Snowflake, CloudLightning, CloudFog, Skull,
   Droplets, HeartPulse, Tent, Sandwich
 } from 'lucide-react';
-import Navbar from '../Components/NavBar';
+//import Navbar from '../Components/NavBar';
 
 const DisasterGuide = ({ 
   icon: Icon, 

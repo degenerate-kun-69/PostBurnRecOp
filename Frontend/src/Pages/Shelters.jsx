@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from '../Components/NavBar.jsx';
 import { MapPin, Navigation } from 'lucide-react';
-import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
+//import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 
 const containerStyle = {
   width: "100%",
