@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-//import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Icon } from 'leaflet';
 import { Chart } from 'react-google-charts';
 import { AlertTriangle, Droplets, Wind, Sun, Waves, Mountain, Tornado, Thermometer, Snowflake } from 'lucide-react';
