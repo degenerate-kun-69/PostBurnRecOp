@@ -1,132 +1,121 @@
-import React, { useState, useEffect } from "react";
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaSun, FaMoon, FaPaperPlane } from "react-icons/fa";
+import React from 'react';
 
-const Footer = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
- 
-
-  // Load theme from localStorage on mount
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme) {
-      setIsDarkMode(storedTheme === "dark");
-    }
-  }, []);
-
-  // Apply dark mode class
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }, [isDarkMode]);
-
+const Footer = ({ darkMode }) => {
   return (
-    <footer className="relative border-t bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {/* Newsletter Section */}
-          <div className="relative">
-            <h2 className="mb-4 text-3xl font-bold">Stay Connected</h2>
-            <p className="mb-6 text-gray-600 dark:text-gray-400">
-              Join our newsletter for the latest updates and exclusive offers.
+    <footer className={`py-8 ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"}`}>
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-8 text-center md:text-left">
+          {/* Organization Info */}
+          <div className="flex flex-col items-center md:items-start col-span-2 lg:col-span-3">
+            <h1 className={`text-2xl font-bold mb-4 ${darkMode ? "text-white" : "text-gray-900"}`}>
+              Disaster Response Hub
+            </h1>
+            <p className={`text-base flex items-center ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Emergency Operations Center, New Delhi, India
             </p>
-            <form className="relative">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full rounded-lg border bg-white px-4 py-2 pr-12 text-sm focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
-              />
-              <button
-                type="submit"
-                className="absolute right-1 top-1 flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white transition-transform hover:scale-105 hover:bg-blue-600"
-              >
-                <FaPaperPlane className="h-4 w-4" />
-                <span className="sr-only">Subscribe</span>
-              </button>
-            </form>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="mb-4 text-lg font-semibold">Quick Links</h3>
-            <nav className="flex flex-col space-y-2">
-              {["Home", "About Us", "Services", "Products", "Contact"].map((link) => (
+          {/* Resources Section */}
+          <div className="flex flex-col items-center md:items-start lg:col-span-1 lg:-ml-[20vw]">
+            <h5 className={`text-xl mb-4 ${darkMode ? "text-white" : "text-gray-900"}`}>
+              Emergency Resources
+            </h5>
+            <ul className={`space-y-3 text-base ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+              <li>
+                <a href="#" className="hover:text-blue-500 hover:underline">Alert System</a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-500 hover:underline">Emergency Maps</a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-500 hover:underline">Resource Locator</a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-500 hover:underline">Relief Camps</a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-500 hover:underline">Volunteer Portal</a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Help Section */}
+          <div className="flex flex-col items-center md:items-start lg:col-span-1 lg:-ml-[10vw]">
+            <h5 className={`text-xl mb-4 ${darkMode ? "text-white" : "text-gray-900"}`}>
+              Help & Support
+            </h5>
+            <ul className={`space-y-3 text-base ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+              <li>
+                <a href="#" className="hover:text-blue-500 hover:underline">Emergency Guide</a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-500 hover:underline">Safety Protocols</a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-500 hover:underline">Report Incident</a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-500 hover:underline">Training Materials</a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-500 hover:underline">Contact Centers</a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Social Links */}
+          <div className="flex flex-col items-center md:items-start lg:col-span-1">
+            <h5 className={`text-xl mb-4 ${darkMode ? "text-white" : "text-gray-900"}`}>
+              Connect With Us
+            </h5>
+            <div className="flex space-x-4">
+              {['facebook', 'twitter', 'instagram'].map((platform) => (
                 <a
-                  key={link}
+                  key={platform}
                   href="#"
-                  className="text-sm text-gray-600 transition-colors hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400"
+                  className={`hover:text-blue-500 ${darkMode ? "text-gray-300" : "text-gray-700"}`}
                 >
-                  {link}
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    {platform === 'facebook' && (
+                      <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
+                    )}
+                    {platform === 'twitter' && (
+                      <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
+                    )}
+                    {platform === 'instagram' && (
+                      <path d="M16 4H8a4 4 0 00-4 4v8a4 4 0 004 4h8a4 4 0 004-4V8a4 4 0 00-4-4zm-8 12a4 4 0 110-8 4 4 0 010 8zm8-10a1 1 0 110-2 1 1 0 010 2z" />
+                    )}
+                  </svg>
                 </a>
               ))}
-            </nav>
-          </div>
-
-          {/* Contact Info */}
-          <div>
-            <h3 className="mb-4 text-lg font-semibold">Contact Us</h3>
-            <address className="space-y-2 text-sm not-italic text-gray-600 dark:text-gray-300">
-              <p>123 Innovation Street</p>
-              <p>Tech City, TC 12345</p>
-              <p>Phone: (123) 456-7890</p>
-              <p>Email: hello@example.com</p>
-            </address>
-          </div>
-
-          {/* Social Links & Dark Mode */}
-          <div>
-            <h3 className="mb-4 text-lg font-semibold">Follow Us</h3>
-            <div className="mb-6 flex space-x-4">
-              {[
-                { Icon: FaFacebook, label: "Facebook" },
-                { Icon: FaTwitter, label: "Twitter" },
-                { Icon: FaInstagram, label: "Instagram" },
-                { Icon: FaLinkedin, label: "LinkedIn" },
-              ].map(({ Icon, label }) => (
-                <button
-                  key={label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 transition-colors hover:bg-gray-200 dark:border-gray-700 dark:hover:bg-gray-800"
-                  title={`Follow us on ${label}`}
-                >
-                  <Icon className="h-4 w-4" />
-                  <span className="sr-only">{label}</span>
-                </button>
-              ))}
-            </div>
-
-            {/* Dark Mode Toggle */}
-            <div className="flex items-center space-x-2">
-              <FaSun className="h-4 w-4" />
-              <button
-                onClick={() => setIsDarkMode(!isDarkMode)}
-                className={`relative h-6 w-11 rounded-full transition-colors ${
-                  isDarkMode ? "bg-blue-500" : "bg-gray-300"
-                }`}
-              >
-                <div
-                  className={`absolute left-1 top-1 h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    isDarkMode ? "translate-x-5" : ""
-                  }`}
-                />
-              </button>
-              <FaMoon className="h-4 w-4" />
             </div>
           </div>
         </div>
 
+        <hr className={`my-8 ${darkMode ? "border-gray-600" : "border-gray-300"}`} />
+
         {/* Footer Bottom */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 text-center md:flex-row">
-          <p className="text-sm text-gray-600 dark:text-gray-300">
-            © 2024 Your Company. All rights reserved.
+        <div className="flex flex-col md:flex-row justify-center md:justify-between items-center">
+          <p className={`text-base flex items-center mb-4 md:mb-0 ${darkMode ? "text-gray-300" : "text-gray-700"} text-center`}>
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            Emergency Contact: {" "}
+            <a href="mailto:emergency@disaster-response.org" className="hover:text-blue-500 hover:underline ml-1">
+              emergency@disaster-response.org
+            </a>
+          </p>
+          <p className={`text-base ${darkMode ? "text-gray-300" : "text-gray-700"} text-center`}>
+            &copy; Disaster Response Hub {new Date().getFullYear()}
+            <br />
+            24/7 Emergency Hotline: 1800-DISASTER
           </p>
         </div>
       </div>
-
-     
     </footer>
   );
 };

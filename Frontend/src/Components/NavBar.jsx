@@ -1,53 +1,144 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  Home, 
-  MapPin, 
-  Flame, 
-  Search, 
-  Map, 
-  Hospital, 
-  LayoutDashboard, 
- Book,
-  AlertOctagon,
-  Bell,
-  User,
-  LogOut
+  Home, MapPin, Flame, Search, Map, Hospital, 
+  LayoutDashboard, Book, AlertOctagon, Bell, 
+  User, LogOut, ChevronDown, Settings, Info,
+  Phone, Shield, ArrowRight,
+  AlertCircle,
+  LayoutDashboardIcon,
+  HospitalIcon,
+  Flag,
+  HelpCircleIcon,
+  HelpingHandIcon
 } from 'lucide-react';
 
 const Navbar = ({ user }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  
-  const handleSearch = (e) => {
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [notifications, setNotifications] = useState([
+   
+  ]);
+
+  useEffect(() => {
+    const fetchEarthquakeData = async () => {
+      try {
+        const response = await fetch(
+          "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson"
+        );
+        const data = await response.json();
+
+        if (data.features) {
+          const newNotifications = data.features.map((quake, index) => ({
+            id: index + 1,
+            text: `Earthquake: ${quake.properties.place} (M${quake.properties.mag})`,
+            time: new Date(quake.properties.time).toLocaleTimeString(),
+            type: "earthquake",
+          }));
+
+          setNotifications(newNotifications);
+        }
+      } catch (error) {
+        console.error("Error fetching earthquake data:", error);
+      }
+    };
+
+    fetchEarthquakeData();
+
+    // Fetch data every 10 minutes
+    const interval = setInterval(fetchEarthquakeData, 10 * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+
+  const dropdownRef = useRef(null);
+  const searchRef = useRef(null);
+
+  // Dropdown menus configuration
+  const dropdownMenus = {
+    resources: {
+      title: "Resources",
+      items: [
+    //    { label: "Disaster Alert", icon: AlertCircle, path: "/DisasterAlert" },
+        { label: "DashBoard", icon: LayoutDashboardIcon, path: "/DashBoard" },
+        { label: "Training Materials", icon: Book, path: "/Awareness-Page" },
+   //     { label: "Hospitals", icon: HospitalIcon, path: "/hospitals" }
+      ]
+    },
+    services: {
+      title: "Services",
+      items: [
+        { label: "Find Shelter", icon: MapPin, path: "/shelters" },
+        { label: " Report Incident", icon: Flag , path: "/Report" },
+        { label: "Volunteer", icon: Shield, path: "/VolunteerForm" },
+        { label: "Medical Help", icon: Hospital, path: "/hospitals" },
+        { label: "Fire Stations", icon: Flame, path: "/fire-stations" },
+        {label:"RequirementForm", icon: HelpingHandIcon, path: "/ResourceRequirement"}
+      ]
+    }
+  };
+
+  const handleSearch = useCallback((e) => {
     e.preventDefault();
     console.log('Searching for:', searchQuery);
-    // Here you would typically call an API or use a search function
-  };
+    // Implement search functionality
+  }, [searchQuery]);
 
-  const getUserInitials = () => {
-    if (user && user.firstName && user.lastName) {
-      return `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();
+  const handleClickOutside = useCallback((event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setShowProfileMenu(false);
+      setActiveDropdown(null);
     }
-    return 'U';
-  };
+  }, []);
 
-  // Toggle mobile menu
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [handleClickOutside]);
 
-  // Toggle profile dropdown
-  const toggleProfileMenu = () => {
-    setShowProfileMenu(!showProfileMenu);
-  };
+  const handleKeyPress = useCallback((e) => {
+    if (e.key === 'Escape') {
+      setShowProfileMenu(false);
+      setActiveDropdown(null);
+    }
+  }, []);
 
-  // Google Sign-in handler
-  const handleGoogleSignIn = () => {
-    console.log('Initiating Google Sign-in...');
-    // Implement Google OAuth logic here
-  };
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress);
+    return () => document.removeEventListener('keydown', handleKeyPress);
+  }, [handleKeyPress]);
+
+  const renderDropdownMenu = (key, menu) => (
+    <div className="relative group">
+      <button
+        onClick={() => setActiveDropdown(activeDropdown === key ? null : key)}
+        className="flex items-center space-x-1 hover:text-blue-200 transition-colors py-2"
+      >
+        <span>{menu.title}</span>
+        <ChevronDown className={`h-4 w-4 transition-transform ${activeDropdown === key ? 'rotate-180' : ''}`} />
+      </button>
+      
+      {activeDropdown === key && (
+        <div className="absolute top-full left-0 mt-1 w-64 bg-white rounded-lg shadow-lg py-2 text-gray-800 z-50">
+          {menu.items.map((item, index) => (
+            <Link
+              key={index}
+              to={item.path}
+              className="flex items-center px-4 py-2 hover:bg-blue-50 transition-colors"
+              onClick={() => setActiveDropdown(null)}
+            >
+              <item.icon className="h-5 w-5 mr-3 text-blue-600" />
+              <span>{item.label}</span>
+              <ArrowRight className="h-4 w-4 ml-auto text-gray-400" />
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <nav className="bg-blue-600 text-white shadow-lg">
@@ -60,145 +151,159 @@ const Navbar = ({ user }) => {
               <span className="text-xl font-bold">Disaster Management</span>
             </Link>
             <button 
-              className="md:hidden text-white" 
-              onClick={toggleMenu}
+              className="md:hidden text-white"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? (
-                <span className="text-2xl">×</span>
-              ) : (
-                <span className="text-2xl">≡</span>
-              )}
+              {isMenuOpen ? '×' : '≡'}
             </button>
           </div>
-          
-          {/* Search Form - Full width on mobile, constrained on desktop */}
-          <form onSubmit={handleSearch} className={`${isMenuOpen ? 'block' : 'hidden'} md:block w-full md:w-auto md:mr-auto mb-3 md:mb-0`}>
-  <div className="relative">
-    <input
-      type="text"
-      value={searchQuery}
-      onChange={(e) => setSearchQuery(e.target.value)}
-      placeholder="Search..."
-      className="w-full md:w-48 ml-4 px-2 py-1 pl-7 pr-8 rounded-md bg-blue-500 text-white placeholder-blue-200 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:bg-blue-400 transition-all duration-100 text-sm"
-    />
-    <Search className="absolute ml-4 left-1.5 top-1.5 h-4 w-4 text-blue-200" />
-    {searchQuery && (
-      <button
-        type="submit"
-        className="absolute right-2 top-1 px-1.5 py-0.5 text-xs bg-blue-700 rounded hover:bg-blue-800 transition-colors duration-200"
-      >
-        Go
-      </button>
-    )}
-  </div>
-</form>
-          
-          {/* Navigation Links */}
-          <div className={`${isMenuOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row md:items-center space-y-3 md:space-y-0 md:space-x-6 w-full md:w-auto`}>
+
+          {/* Enhanced Search with Autocomplete */}
+          <form onSubmit={handleSearch} className={`${isMenuOpen ? 'block' : 'hidden'}  md:block w-full md:w-auto md:mr-auto mb-3 md:mb-0`}>
+            <div className="relative" ref={searchRef}>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search locations, services..."
+                className="w-full ml-2 md:w-64 px-4 py-2 pl-10 pr-8 rounded-lg bg-blue-500 text-white placeholder-blue-200 
+                         focus:outline-none focus:ring-2 focus:ring-blue-300 focus:bg-blue-400 transition-all duration-200"
+              />
+              <Search className="absolute  left-3 top-2.5 h-5 w-5 text-blue-200" />
+              {searchQuery && (
+                <button
+                  type="submit"
+                  className="absolute right-2 top-2 px-2 py-1 text-sm bg-blue-700 rounded hover:bg-blue-800 
+                           transition-colors duration-200"
+                >
+                  Search
+                </button>
+              )}
+            </div>
+          </form>
+
+          {/* Navigation Links with Dropdowns */}
+          <div className={`${isMenuOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row md:items-center space-y-3 md:space-y-0 md:space-x-6 w-full md:w-auto`} ref={dropdownRef}>
+            {Object.entries(dropdownMenus).map(([key, menu]) => renderDropdownMenu(key, menu))}
+            
             <Link to="/map-views" className="flex items-center space-x-2 hover:text-blue-200 transition-colors">
               <Map className="h-5 w-5" />
               <span>Live Map</span>
             </Link>
-            <Link to="/shelters" className="flex items-center space-x-2 hover:text-blue-200 transition-colors">
-              <MapPin className="h-5 w-5" />
-              <span>Shelter Homes</span>
+
+            {/* Notifications */}
+            <div className="relative" ref={dropdownRef}>
+      <button
+        onClick={() => setActiveDropdown(activeDropdown === "notifications" ? null : "notifications")}
+        className="relative flex items-center hover:text-blue-200 transition-colors"
+      >
+        <Bell className="h-5 w-5" />
+        {notifications.length > 0 && (
+          <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full text-xs flex items-center justify-center">
+            {notifications.length}
+          </span>
+        )}
+      </button>
+
+      {activeDropdown === "notifications" && (
+        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg py-2 text-gray-800 z-50">
+          <div className="px-4 py-2 border-b border-gray-100 font-semibold">
+            Notifications
+          </div>
+          {notifications.length > 0 ? (
+            notifications.map((notification) => (
+              <div key={notification.id} className="px-4 py-3 hover:bg-gray-50 cursor-pointer">
+                <div className="flex items-center">
+                  <span
+                    className={`h-2 w-2 rounded-full mr-2 ${
+                      notification.type === "alert"
+                        ? "bg-red-500"
+                        : notification.type === "emergency"
+                        ? "bg-yellow-500"
+                        : "bg-blue-500"
+                    }`}
+                  />
+                  <p className="text-sm flex-1">{notification.text}</p>
+                  <span className="text-xs text-gray-500">{notification.time}</span>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-center py-4 text-sm text-gray-500">No new alerts</p>
+          )}
+          <div className="px-4 py-2 border-t border-gray-100">
+            <Link to="/DisasterAlert" className="text-sm text-blue-600 hover:text-blue-800">
+              View All Notifications
             </Link>
-            <Link to="/fire-stations" className="flex items-center space-x-2 hover:text-blue-200 transition-colors">
-              <Flame className="h-5 w-5" />
-              <span>Fire Stations</span>
-            </Link>
-            <Link to="/hospitals" className="flex items-center space-x-2 hover:text-blue-200 transition-colors">
-              <Hospital className="h-5 w-5" />
-              <span>Hospitals</span>
-            </Link>
-            <Link to="/awareness-page" className="flex items-center space-x-2 hover:text-blue-200 transition-colors">
-              <Book className="h-5 w-5" />
-              <span>Awareness</span>
-            </Link>
-            <Link to="/dashboard" className="flex items-center space-x-2 hover:text-blue-200 transition-colors">
-              <LayoutDashboard className="h-5 w-5" />
-              <span>Dashboard</span>
-            </Link>
-            <Link to="/DisasterAlert" className="flex items-center space-x-2 hover:text-blue-200 transition-colors">
-              <AlertOctagon className="h-5 w-5" />
-              <span>Alerts</span>
-            </Link>
-            
-            {/* User Profile or Sign In */}
+          </div>
+        </div>
+      )}
+    </div>
+
+            {/* User Profile */}
             <div className="relative">
               {user ? (
-                <>
-                  <div 
-                    className="h-8 w-8 rounded-full bg-blue-800 flex items-center justify-center cursor-pointer hover:bg-blue-700 transition-colors"
-                    onClick={toggleProfileMenu}
+                <div className="relative">
+                  <button
+                    onClick={() => setShowProfileMenu(!showProfileMenu)}
+                    className="flex items-center space-x-2 hover:text-blue-200 transition-colors"
                   >
-                    {getUserInitials()}
-                  </div>
-                  
+                    <div className="h-8 w-8 rounded-full bg-blue-800 flex items-center justify-center">
+                      {`${user.firstName?.[0]}${user.lastName?.[0]}`}
+                    </div>
+                    <ChevronDown className={`h-4 w-4 transition-transform ${showProfileMenu ? 'rotate-180' : ''}`} />
+                  </button>
+
                   {showProfileMenu && (
-                    <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white text-black z-50">
-                      <div className="p-4 border-b border-gray-200">
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 text-gray-800 z-50">
+                      <div className="px-4 py-2 border-b border-gray-100">
                         <p className="font-medium">{user.firstName} {user.lastName}</p>
                         <p className="text-sm text-gray-500">{user.email}</p>
                       </div>
-                      <div className="py-1">
-                        <Link 
-                          to="/profile" 
-                          className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
-                        >
-                          <User className="h-4 w-4 mr-2" />
-                          Profile
-                        </Link>
-                        <Link 
-                          to="/notifications" 
-                          className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
-                        >
-                          <Bell className="h-4 w-4 mr-2" />
-                          Notifications
-                        </Link>
-                        <button 
-                          className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
-                          onClick={() => console.log('Logging out...')}
-                        >
-                          <LogOut className="h-4 w-4 mr-2" />
-                          Sign out
-                        </button>
-                      </div>
+                      <Link to="/profile" className="flex items-center px-4 py-2 hover:bg-gray-50">
+                        <User className="h-4 w-4 mr-2 text-gray-500" />
+                        Profile
+                      </Link>
+                      <Link to="/settings" className="flex items-center px-4 py-2 hover:bg-gray-50">
+                        <Settings className="h-4 w-4 mr-2 text-gray-500" />
+                        Settings
+                      </Link>
+                      <button
+                        onClick={() => {/* Implement logout */}}
+                        className="flex items-center w-full px-4 py-2 hover:bg-gray-50 text-red-600"
+                      >
+                        <LogOut className="h-4 w-4 mr-2" />
+                        Sign out
+                      </button>
                     </div>
                   )}
-                </>
+                </div>
               ) : (
                 <button
-                  onClick={handleGoogleSignIn}
-                  className="flex items-center space-x-2 bg-white text-blue-700 px-3 py-1.5 rounded-md hover:bg-gray-100 transition-colors"
+                  onClick={() => {/* Implement Google Sign-in */}}
+                  className="flex items-center space-x-2 bg-white text-blue-700 px-4 py-2 rounded-lg 
+                           hover:bg-gray-100 transition-colors"
                 >
-                  <svg 
-                    width="18" 
-                    height="18" 
-                    viewBox="0 0 18 18" 
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g>
-                      <path 
-                        d="M17.64,9.20454545 C17.64,8.56636364 17.5827273,7.95272727 17.4763636,7.36363636 L9,7.36363636 L9,10.845 L13.8436364,10.845 C13.635,11.97 13.0009091,12.9231818 12.0477273,13.5613636 L12.0477273,15.8195455 L14.9563636,15.8195455 C16.6581818,14.2527273 17.64,11.9454545 17.64,9.20454545 Z" 
-                        fill="#4285F4" 
-                      />
-                      <path 
-                        d="M9,18 C11.43,18 13.4672727,17.1940909 14.9563636,15.8195455 L12.0477273,13.5613636 C11.2418182,14.1013636 10.2109091,14.4204545 9,14.4204545 C6.65590909,14.4204545 4.67181818,12.8372727 3.96409091,10.71 L0.957272727,10.71 L0.957272727,13.0418182 C2.43818182,15.9831818 5.48181818,18 9,18 Z" 
-                        fill="#34A853" 
-                      />
-                      <path 
-                        d="M3.96409091,10.71 C3.78409091,10.17 3.68181818,9.59318182 3.68181818,9 C3.68181818,8.40681818 3.78409091,7.83 3.96409091,7.29 L3.96409091,4.95818182 L0.957272727,4.95818182 C0.347727273,6.17318182 0,7.54772727 0,9 C0,10.4522727 0.347727273,11.8268182 0.957272727,13.0418182 L3.96409091,10.71 Z" 
-                        fill="#FBBC05" 
-                      />
-                      <path 
-                        d="M9,3.57954545 C10.3213636,3.57954545 11.5077273,4.03363636 12.4404545,4.92545455 L15.0218182,2.34409091 C13.4631818,0.891818182 11.4259091,0 9,0 C5.48181818,0 2.43818182,2.01681818 0.957272727,4.95818182 L3.96409091,7.29 C4.67181818,5.16272727 6.65590909,3.57954545 9,3.57954545 Z" 
-                        fill="#EA4335" 
-                      />
-                    </g>
+                  <svg className="h-5 w-5" viewBox="0 0 24 24">
+                    <path
+                      fill="currentColor"
+                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                    />
+                    <path
+                      fill="#34A853"
+                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                    />
+                    <path
+                      fill="#FBBC05"
+                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                    />
+                    <path
+                      fill="#EA4335"
+                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                    />
                   </svg>
-                  <span>Sign in</span>
+                  <span>Sign in with Google</span>
                 </button>
               )}
             </div>

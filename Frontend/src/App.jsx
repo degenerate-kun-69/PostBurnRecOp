@@ -12,6 +12,10 @@ import DisasterAlert from './Pages/DisasterAlert.jsx';
 import axios from 'axios';
 import Login from './Pages/Auth/Login.jsx';
 import Signup from './Pages/Auth/Signup.jsx';
+import Footer from './Components/Footer.jsx';
+import Report from './Pages/Report.jsx';
+import VolunteerForm from './Pages/VolunteerForm.jsx';
+import ResourceForm from './Pages/ResourcesRequirement.jsx';
 
 function App() {
   const [alerts, setAlerts] = useState([]);
@@ -28,7 +32,7 @@ function App() {
   }, []);
 
   return (
-
+    <>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
@@ -38,10 +42,14 @@ function App() {
         <Route path="/hospitals" element={<Hospitals />} />
         <Route path="/Awareness-Page" element={<AwarenessPage />} />
         <Route path="/DashBoard" element={<DashBoard />} />
-  {/*      <Route path="/map-views" element={<MapViews />} /> */}
+    {/*  <Route path="/map-views" element={<MapViews />} /> */}
         <Route path="/DisasterAlert" element={<DisasterAlert />} />
-       
+        <Route path="/Report" element={<Report />} />
+        <Route path="/VolunteerForm" element={<VolunteerForm />} />
+        <Route path="/ResourceRequirement" element={<ResourceForm />} />
       </Routes>
+      <Footer />
+      </>
 
   );
 }

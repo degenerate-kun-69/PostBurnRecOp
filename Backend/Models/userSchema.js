@@ -7,19 +7,14 @@ const userSchema = new mongoose.Schema({
         trim: true,
         minLength: 2,
         maxLength: 50,
+        unique: true,
     },
     password: {
         type: String,
         required: [true, "User Password is required"],
         minLength: 6,
-    
-},
-createdOn:{
-    type:Date,
-    default:Date.now    
-}
-
-
+        select: false,  // Do not return password in queries by default
+    }
 }, { timestamps: true });
 
 export const User = mongoose.model("User", userSchema);
