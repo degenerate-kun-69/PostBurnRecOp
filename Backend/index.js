@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import router from "./routes/reportRoutes.js";
 import Volunteer from "./routes/Volunteer.js";
+import Resources from "./routes/Resources.js";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ connectDB(); // ✅ Call after app initialization
 
 app.use("/api/reports", router);
 app.use("/api/volunteers", Volunteer);
+app.use("/api/resources", Resources);
 
 const PORT = process.env.PORT || 5000;
 

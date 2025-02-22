@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import axios from "axios"; // Import Axios
+import "react-toastify/dist/ReactToastify.css";
 
-const DisasterResourceForm = () => {
+const ResourceForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     resourceType: "",
@@ -9,31 +12,73 @@ const DisasterResourceForm = () => {
     priority: "Medium",
     location: "",
     specificNeeds: "",
-    additionalNotes: ""
+    additionalNotes: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const resourceOptions = [
-    "Food", "Drinking Water", "Medical Supplies", "Shelter", "Clothing", "Rescue Equipment", "Fuel", "Sanitation Supplies",
-    "First Aid Kits", "Generators", "Communication Devices", "Volunteers", "Transportation", "Power Supply Assistance"
+    "Food", "Drinking Water", "Medical Supplies", "Shelter", "Clothing",
+    "Rescue Equipment", "Fuel", "Sanitation Supplies", "First Aid Kits",
+    "Generators", "Communication Devices", "Volunteers", "Transportation",
+    "Power Supply Assistance"
   ];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Resource Requirement Submitted:", formData);
-    alert("Resource request submitted successfully! Our team will review and respond as soon as possible.");
+    setLoading(true);
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/resources", formData, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+      toast.success("Resource request submitted successfully! 🎉");
+
+      setFormData({
+        resourceType: "",
+        quantity: "",
+        priority: "Medium",
+        location: "",
+        specificNeeds: "",
+        additionalNotes: "",
+      });
+
+    } catch (error) {
+      if (error.response) {
+        // Server responded with a status code outside the 2xx range
+        toast.error(`Error: ${error.response.data.error || "Submission failed."}`);
+      } else if (error.request) {
+        // Request was made but no response received
+        toast.error("No response from server. Check your connection.");
+      } else {
+        // Something else caused an error
+        toast.error(`Error: ${error.message}`);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
+      <ToastContainer position="top-right" autoClose={3000} />
+
       <h2 className="text-2xl font-bold mb-4">Disaster Resource Requirement Form</h2>
-      <p className="text-sm text-gray-600 mb-4">Please fill out the form below to request necessary resources for disaster relief. Ensure accuracy to expedite assistance.</p>
+      <p className="text-sm text-gray-600 mb-4">
+        Please fill out the form below to request necessary resources for disaster relief.
+        Ensure accuracy to expedite assistance.
+      </p>
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium">Resource Type <span className="text-red-500">*</span></label>
+          <label className="block text-sm font-medium">
+            Resource Type <span className="text-red-500">*</span>
+          </label>
           <select
             name="resourceType"
             value={formData.resourceType}
@@ -47,8 +92,11 @@ const DisasterResourceForm = () => {
             ))}
           </select>
         </div>
+
         <div>
-          <label className="block text-sm font-medium">Quantity <span className="text-red-500">*</span></label>
+          <label className="block text-sm font-medium">
+            Quantity <span className="text-red-500">*</span>
+          </label>
           <input
             type="number"
             name="quantity"
@@ -57,8 +105,10 @@ const DisasterResourceForm = () => {
             className="w-full p-2 border rounded"
             placeholder="Enter the required quantity"
             required
+            min="1"
           />
         </div>
+
         <div>
           <label className="block text-sm font-medium">Priority Level</label>
           <select
@@ -72,8 +122,11 @@ const DisasterResourceForm = () => {
             <option value="Low">Low - Non-Urgent</option>
           </select>
         </div>
+
         <div>
-          <label className="block text-sm font-medium">Location <span className="text-red-500">*</span></label>
+          <label className="block text-sm font-medium">
+            Location <span className="text-red-500">*</span>
+          </label>
           <input
             type="text"
             name="location"
@@ -84,6 +137,7 @@ const DisasterResourceForm = () => {
             required
           />
         </div>
+
         <div>
           <label className="block text-sm font-medium">Specific Needs</label>
           <input
@@ -92,9 +146,10 @@ const DisasterResourceForm = () => {
             value={formData.specificNeeds}
             onChange={handleChange}
             className="w-full p-2 border rounded"
-            placeholder="Specify any additional needs (e.g., baby formula, medicine, blankets)"
+            placeholder="Specify additional needs (e.g., baby formula, medicine, blankets)"
           />
         </div>
+
         <div>
           <label className="block text-sm font-medium">Additional Notes</label>
           <textarea
@@ -105,19 +160,23 @@ const DisasterResourceForm = () => {
             placeholder="Any extra details that might help in fulfilling the request"
           ></textarea>
         </div>
+
         <div className="flex justify-between">
-        <button
+          <button
             type="button"
             onClick={() => navigate('/')}
             className="p-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+            disabled={loading}
           >
             Back
           </button>
+
           <button
             type="submit"
-            className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className={`p-2 text-white rounded ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
+            disabled={loading}
           >
-            Submit Resource Request
+            {loading ? "Submitting..." : "Submit Resource Request"}
           </button>
         </div>
       </form>
@@ -125,4 +184,4 @@ const DisasterResourceForm = () => {
   );
 };
 
-export default DisasterResourceForm;
+export default ResourceForm;
