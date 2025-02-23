@@ -8,7 +8,7 @@ import AwarenessPage from './Pages/AwarenessPage.jsx';
 import DashBoard from './Pages/DashBoard.jsx';
 //import MapViews from './Pages/MapViews.jsx';
 import DisasterAlert from './Pages/DisasterAlert.jsx';
-
+import IncidentTracker from './Pages/IncidentTracker.jsx';
 import axios from 'axios';
 import Login from './Pages/Auth/Login.jsx';
 import Signup from './Pages/Auth/Signup.jsx';
@@ -47,6 +47,7 @@ function App() {
         <Route path="/Report" element={<Report />} />
         <Route path="/VolunteerForm" element={<VolunteerForm />} />
         <Route path="/ResourceRequirement" element={<ResourceForm />} />
+        <Route path="/IncidentTracker" element={<IncidentTracker />} />
       </Routes>
       <Footer />
       </>

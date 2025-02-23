@@ -65,6 +65,7 @@ const Navbar = ({ user }) => {
     //    { label: "Disaster Alert", icon: AlertCircle, path: "/DisasterAlert" },
         { label: "DashBoard", icon: LayoutDashboardIcon, path: "/DashBoard" },
         { label: "Training Materials", icon: Book, path: "/Awareness-Page" },
+        { label: "Incident Tracker", icon: AlertOctagon, path: "/IncidentTracker" },
    //     { label: "Hospitals", icon: HospitalIcon, path: "/hospitals" }
       ]
     },
