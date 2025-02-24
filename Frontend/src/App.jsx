@@ -18,18 +18,7 @@ import VolunteerForm from './Pages/VolunteerForm.jsx';
 import ResourceForm from './Pages/ResourcesRequirement.jsx';
 
 function App() {
-  const [alerts, setAlerts] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/v1/alerts/alerts")
-      .then((response) => {
-        setAlerts(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+ 
 
   return (
     <>
