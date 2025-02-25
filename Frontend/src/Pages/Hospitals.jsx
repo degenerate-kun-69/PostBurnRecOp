@@ -9,7 +9,7 @@ const containerStyle = {
 };
 
 const defaultCenter = {
-  lat: 34.0522, // Default center (Los Angeles)
+  lat: 34.0522, 
   lng: -118.2437,
 };
 
