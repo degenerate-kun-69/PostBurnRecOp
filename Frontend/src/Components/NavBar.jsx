@@ -164,7 +164,7 @@ const navigate = useNavigate();
             </button>
           </div>
 
-          {/* Enhanced Search with Autocomplete */}
+          
           <form onSubmit={handleSearch} className={`${isMenuOpen ? 'block' : 'hidden'}  md:block w-full md:w-auto md:mr-auto mb-3 md:mb-0`}>
             <div className="relative" ref={searchRef}>
               <input
