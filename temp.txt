@@ -1,0 +1,33 @@
+const int triggerPin = 2;
+const int coil1 = 9;
+const int coil2 = 10;
+const int potPin = A0;
+
+void setup() {
+  pinMode(triggerPin, INPUT_PULLUP);
+  pinMode(coil1, OUTPUT);
+  pinMode(coil2, OUTPUT);
+  digitalWrite(coil1, LOW);  // Initial state
+  digitalWrite(coil2, LOW);
+}
+
+void loop() {
+  if(digitalRead(triggerPin) == LOW) {
+    int pulseWidth = map(analogRead(potPin), 0, 1023, 10, 100);
+    
+    // Stage 1 activation
+    digitalWrite(coil1, HIGH);
+    delayMicroseconds(pulseWidth * 100);
+    digitalWrite(coil1, LOW);
+    
+    // Inter-stage delay
+    delay(map(analogRead(potPin), 0, 1023, 0, 50));
+    
+    // Stage 2 activation
+    digitalWrite(coil2, HIGH);
+    delayMicroseconds(pulseWidth * 100);
+    digitalWrite(coil2, LOW);
+    
+    delay(1000); // System cooldown
+  }
+}
